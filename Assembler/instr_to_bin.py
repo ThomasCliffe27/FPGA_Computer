@@ -30,15 +30,22 @@ def instr_to_bin(instruction):
         return instruction
 
     def parse_A_type_instr(parts, opcode):
-        Rx = int(parts[1])
-        addr = int(parts[2])
+        if len(parts) > 2:
+            Rx = int(parts[1])
+            addr = int(parts[2])
+        else:
+            Rx = 0  # Default value for Rx if not given e.g. JUMP addr
+            addr = int(parts[1])
         instruction = (opcode << 24) + (Rx << 20) + ((addr & 0xFFFF) << 4)
         return instruction
 
     def parse_R_type_instr(parts, opcode):
         Rx = int(parts[1])
         Ry = int(parts[2])
-        Rz = int(parts[3])
+        if len(parts) > 3:
+            Rz = int(parts[3])
+        else:
+            Rz = 0  # Default value for Rz if not given e.g. NOT Rx, Ry
         instruction = (opcode << 24) + (Rx << 20) + (Ry << 16) + (Rz << 12)
         return instruction
 
@@ -74,6 +81,18 @@ def instr_to_bin(instruction):
         opcode = 0x32
         return parse_R_type_instr(parsed_parts, opcode)
 
+    elif opcode == "NOT":
+        opcode = 0x33
+        return parse_R_type_instr(parsed_parts, opcode)
+    
+    elif opcode == "JUMP":
+        opcode = 0x40
+        return parse_A_type_instr(parsed_parts, opcode)
+
+    elif opcode == "JUMPR":
+        opcode = 0x41
+        return parse_A_type_instr(parsed_parts, opcode)
+
     elif opcode == "NOP":
         opcode = 0xFE
         return opcode << 24
@@ -81,3 +100,6 @@ def instr_to_bin(instruction):
     elif opcode == "HALT":
         opcode = 0xFF
         return opcode << 24
+    
+    else:
+        raise ValueError(f"Unknown instruction: {opcode}")

@@ -46,23 +46,36 @@ class CPU:
 
         elif opcode == 0x20: #ADD
             Rx, Ry, Rz = parse_R_type_instr(instruction)
-            self.regs[Rz] = (self.regs[Rx] + self.regs[Ry]) & 0xFFFFFFFF
+            self.regs[Rx] = (self.regs[Ry] + self.regs[Rz]) & 0xFFFFFFFF
 
         elif opcode == 0x21: #SUB
             Rx, Ry, Rz = parse_R_type_instr(instruction)
-            self.regs[Rz] = (self.regs[Rx] - self.regs[Ry]) & 0xFFFFFFFF
+            self.regs[Rx] = (self.regs[Ry] - self.regs[Rz]) & 0xFFFFFFFF
 
         elif opcode == 0x30: #AND
             Rx, Ry, Rz = parse_R_type_instr(instruction)
-            self.regs[Rz] = self.regs[Rx] & self.regs[Ry]
+            self.regs[Rx] = (self.regs[Ry] & self.regs[Rz]) & 0xFFFFFFFF
 
         elif opcode == 0x31: #OR
             Rx, Ry, Rz = parse_R_type_instr(instruction)
-            self.regs[Rz] = self.regs[Rx] | self.regs[Ry]
+            self.regs[Rx] = (self.regs[Ry] | self.regs[Rz]) & 0xFFFFFFFF
 
         elif opcode == 0x32: #XOR
             Rx, Ry, Rz = parse_R_type_instr(instruction)
-            self.regs[Rz] = self.regs[Rx] ^ self.regs[Ry]
+            self.regs[Rx] = (self.regs[Ry] ^ self.regs[Rz]) & 0xFFFFFFFF
+
+        elif opcode == 0x33: #NOT
+            Rx, Ry, Rz = parse_R_type_instr(instruction)
+            self.regs[Rx] = (~self.regs[Ry]) & 0xFFFFFFFF
+
+        elif opcode == 0x40: #JUMP
+            Rx, addr = parse_A_type_instr(instruction)
+            self.PC = addr
+
+        elif opcode == 0x41: #JUMPR
+            Rx, addr = parse_A_type_instr(instruction)
+            if self.regs[Rx] == 0:
+                self.PC = addr 
 
         elif opcode == 0xFE: #NOP
             pass
