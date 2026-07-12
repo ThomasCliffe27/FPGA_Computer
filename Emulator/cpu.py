@@ -2,7 +2,7 @@ class CPU:
     def __init__(self):
         self.regs = [0] * 16
         self.PC = 0 #Program counter
-        self.memory = [0] * 32
+        self.memory = [0] * 65536
         self.running = True
 
     def fetch(self):

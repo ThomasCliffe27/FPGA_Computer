@@ -1,0 +1,10 @@
+LOADI R1, 6
+LOADI R2, 21
+ADD R1, R2, R3
+AND R2, R3, R4
+STORE R3, 0x1000
+LOAD R5, 0x1000
+NOP
+HALT
+
+#Registers should be [0, 6, 21, 27, 17, 27]
