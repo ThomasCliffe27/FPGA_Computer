@@ -7,8 +7,6 @@ def instr_to_bin(instruction):
 
         if part.startswith("R"):
             part = part[1:]
-        elif part.startswith("#"):
-            part = part[1:]
 
         if part.startswith('0x'):
             part = int(part[2:], 16)

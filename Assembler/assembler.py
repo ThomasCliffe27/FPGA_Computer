@@ -7,7 +7,7 @@ def assemble(input_file, output_file):
     binary_instructions = []
     for line in lines:
         line = line.strip()
-        if line and not line.startswith('//'):
+        if line and not line.startswith('#'):
             binary_instruction = instr_to_bin(line)
             binary_instructions.append(binary_instruction)
 

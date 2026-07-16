@@ -6,7 +6,7 @@ My aim with this project is to help me understand how computers work at a low le
 ## Current status
 - [x] Custom ISA designed
 - [x] Emulator made in Python
-- [ ] An assembler for my custom ISA
+- [x] An assembler for my custom ISA
 - [ ] Design implemented on an FPGA
 - [ ] Adding I/O to my FPGA computer (UART, VGA, PS/2)
 - [ ] A compiler for my custom ISA?
@@ -21,7 +21,7 @@ For a first simple version there will be:
 - Von Neumann architecture
 
 ### ISA
-For the first version of my ISA i have decided to keep it very simple with just enough instructions to run very simple linear programs. The ISA is outined below. 
+For the first version of my ISA i have decided to keep it very simple with just enough instructions to run very simple programs. The ISA is outined below. 
 
 The instructions may contain some abbreviations which i have shown below.
 | Abbreviation | Example | Description| 
@@ -33,7 +33,7 @@ The instructions may contain some abbreviations which i have shown below.
 
 | Instruction    | Opcode| Type  |Description|
 |----------------|-------|-------|-----------|
-|LOADI Rx, #imm  |0x00   |I-Type |Loads an immediate value into a register|
+|LOADI Rx, imm   |0x00   |I-Type |Loads an immediate value into a register|
 |LOAD Rx, addr   |0x01   |A-Type |Loads the byte stored at a memory address into the lowest 8 bits of the register|
 |STORE Rx, addr  |0x10   |A-Type |Stores the lowest 8 bits of the register into a memory address|
 |ADD Rx, Ry, Rz  |0x20   |R-Type |Adds Ry and Rz together and stores the result in Rx|

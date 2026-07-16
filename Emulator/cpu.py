@@ -42,7 +42,7 @@ class CPU:
 
         elif opcode == 0x10: #STORE
             Rx, addr = parse_A_type_instr(instruction)
-            self.memory[addr] = self.regs[Rx]
+            self.memory[addr] = self.regs[Rx] & 0xFF
 
         elif opcode == 0x20: #ADD
             Rx, Ry, Rz = parse_R_type_instr(instruction)
