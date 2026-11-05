@@ -32,6 +32,26 @@ ADD R2, R2, R0
 //0x0014
 LOADR R4, R2
 
+
+// while !sorted
+
+//0x0018
+JUMPR R1, 0x0020
+//0x001C
+JUMP END_OF_FILE
+//0x0020
+
+// for each value
+// sorted = true
+
+//0x0024
+JUMPR R4, 0x0018
+//0x0028
+LOADI, R1, 0x1
+
+
+
+
 // There is currently no instruction to check whether one value is larger than another I will need to implement it in code
 
 // For any two binary numbers if you cycle through each bit from most to least significant:
@@ -63,48 +83,48 @@ LOADR R4, R2
 // loop_tracker = R10
 
 
-//0x0018
-LOADI R5, 0x01
-//0x001C
-LOADI R10, 0x08
-//0x0020
-LOADI R9, 0x0
-//0x0024
-AND R6, R3, R5
-//0x0028
-AND R7, R4, R5
 //0x002C
-SUB R8, R6, R7
+LOADI R5, 0x01
 //0x0030
-JUMPR R8, 0x0050
+LOADI R10, 0x08
 //0x0034
-JUMP 0x0038
-//0x0038
-SUB R8, R6, R5
-//0x003C
-JUMPR R8, 0x0044
-//0x0040
-JUMP 0x004C
-//0x0044
-LOADI R9, 0x1
-//0x0048
-JUMP 0x0050
-//0x004C
 LOADI R9, 0x0
+//0x0038
+AND R6, R3, R5
+//0x003C
+AND R7, R4, R5
+//0x0040
+SUB R8, R6, R7
+//0x0044
+JUMPR R8, 0x0064
+//0x0048
+JUMP 0x004C
+//0x004C
+SUB R8, R6, R5
 //0x0050
-ADD R5, R5, R5
+JUMPR R8, 0x0058
 //0x0054
-SUB R10, R10, R0
+JUMP 0x0060
 //0x0058
-JUMPR R10, 0x0060
+LOADI R9, 0x1
 //0x005C
-JUMP 0x0024
+JUMP 0x0064
+//0x0060
+LOADI R9, 0x0
+//0x0064 
+ADD R5, R5, R5
+//0x0068
+SUB R10, R10, R0
+//0x006C
+JUMPR R10, 0x0074
+//0x0070
+JUMP 0x0038
 
 
 // Now R9 will tell us if value > value + 1
 
 
-//0x0060
+//0x0074
 JUMPR R9, END_OF_WHILE
-//0x0064
+//0x0078
 LOADI R1, 0x0
