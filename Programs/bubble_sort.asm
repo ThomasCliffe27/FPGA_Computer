@@ -38,7 +38,7 @@ LOADR R4, R2
 //0x0018
 JUMPR R1, 0x0020
 //0x001C
-JUMP END_OF_FILE
+JUMP 0x0090
 //0x0020
 
 // for each value
@@ -47,7 +47,7 @@ JUMP END_OF_FILE
 //0x0024
 JUMPR R4, 0x0018
 //0x0028
-LOADI, R1, 0x1
+LOADI R1, 0x1
 
 
 
@@ -122,9 +122,24 @@ JUMP 0x0038
 
 
 // Now R9 will tell us if value > value + 1
+// sorted = false
+// swap value and value + 1
 
 
 //0x0074
-JUMPR R9, END_OF_WHILE
+JUMPR R9, 0x0024
 //0x0078
 LOADI R1, 0x0
+//0x007C
+SUB R2, R2, R0
+//0x0080
+STORER R4, R2
+//0x0084
+ADD R2, R2, R0
+//0x0088
+STORER R3, R2
+//0x008C
+JUMP 0x0024
+
+//0x0090
+HALT

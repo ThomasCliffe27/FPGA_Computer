@@ -1,9 +1,12 @@
-def instr_to_bin(instruction):
+def instr_to_bin(instruction, labels: dict):
     parts = instruction.split()
     parsed_parts = []
 
     for part in parts:
         part = part.strip(', ')
+
+        if part in labels:
+            part = labels[part]
 
         if part.startswith("R"):
             part = part[1:]

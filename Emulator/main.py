@@ -1,6 +1,6 @@
 from cpu import CPU
 
-program = "Programs/program.bin"
+program = "Programs/bubble_sort.bin"
 
 cpu = CPU()
 
@@ -12,6 +12,11 @@ with open(program, 'rb') as f:
         addr += 1
         byte = f.read(1)
 
+    cpu.memory[1000] = 1
+    cpu.memory[1001] = 5
+    cpu.memory[1002] = 2
+    cpu.memory[1003] = 3
 cpu.run()
 
 print(cpu.regs)
+print(cpu.memory[1000], cpu.memory[1001], cpu.memory[1002], cpu.memory[1003])
