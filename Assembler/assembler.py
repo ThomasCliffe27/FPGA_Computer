@@ -9,13 +9,14 @@ def assemble(input_file, output_file):
             cleaned_line = line.strip()
             if cleaned_line and not cleaned_line.startswith("//"):
                 mem_pos += 4
-                if line.startswith("label"):
+                if cleaned_line.startswith("label"):
                     mem_pos -= 4
                     labels[line.strip().removeprefix("label ").removesuffix(":")] = mem_pos
 
         print("Labels:")
         for label in labels:
             print(label, labels[label])
+        print(" ")
 
 
     with open(input_file, 'r') as f:
@@ -33,9 +34,11 @@ def assemble(input_file, output_file):
         for instruction in binary_instructions:
             f.write(instruction.to_bytes(4, byteorder='big'))
 
+    print(f"The program is {mem_pos} bytes big.")
+
 
 if __name__ == "__main__":
-    input_file = 'Programs/program.asm'
-    output_file = 'Programs/program.bin'
+    input_file = 'Programs/bubble_sort.asm'
+    output_file = 'Programs/bubble_sort.bin'
     assemble(input_file, output_file)
     print(f"Assembly complete. Binary output written to {output_file}.")

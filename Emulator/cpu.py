@@ -43,7 +43,7 @@ class CPU:
 
         elif opcode == 0x02: #LOADR
             Rx, addr, Ry = parse_A_type_instr(instruction)
-            self.regs[Rx] = self.memory[Ry]
+            self.regs[Rx] = self.memory[self.regs[Ry]]
 
         elif opcode == 0x10: #STOREA
             Rx, addr, Ry = parse_A_type_instr(instruction)
@@ -51,7 +51,7 @@ class CPU:
 
         elif opcode == 0x11: #STORER
             Rx, addr, Ry = parse_A_type_instr(instruction)
-            self.memory[Ry] = self.regs[Rx] & 0xFF
+            self.memory[self.regs[Ry]] = self.regs[Rx] & 0xFF
 
         elif opcode == 0x20: #ADD
             Rx, Ry, Rz = parse_R_type_instr(instruction)

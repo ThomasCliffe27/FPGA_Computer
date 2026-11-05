@@ -25,29 +25,27 @@ LOADI R0, 0x1
 LOADI R1, 0x0
 //0x0008
 LOADI R2, 0x1000
+
+
 //0x000C
-LOADR R3, R2
-//0x0010
-ADD R2, R2, R0
-//0x0014
-LOADR R4, R2
+
 
 
 // while !sorted
 
-//0x0018
-JUMPR R1, 0x0020
-//0x001C
-JUMP 0x0090
-//0x0020
+label While_Not_Sorted
+    JUMPR R1, Start_Pass
+    JUMP Program_End
 
-// for each value
-// sorted = true
+label Start_Pass
+    LOADI R2, 0x1000
+    LOADI R1, 0x1
 
-//0x0024
-JUMPR R4, 0x0018
-//0x0028
-LOADI R1, 0x1
+label For_Each_Value
+    LOADR R3, R2
+    ADD R2, R2, R0
+    LOADR R4, R2
+    JUMPR R4, While_Not_Sorted
 
 
 
@@ -82,64 +80,48 @@ LOADI R1, 0x1
 // is_greater = R9
 // loop_tracker = R10
 
+label Greater_Than
+    LOADI R5, 0x01
+    LOADI R10, 0x08
+    LOADI R9, 0x0
 
-//0x002C
-LOADI R5, 0x01
-//0x0030
-LOADI R10, 0x08
-//0x0034
-LOADI R9, 0x0
-//0x0038
-AND R6, R3, R5
-//0x003C
-AND R7, R4, R5
-//0x0040
-SUB R8, R6, R7
-//0x0044
-JUMPR R8, 0x0064
-//0x0048
-JUMP 0x004C
-//0x004C
-SUB R8, R6, R5
-//0x0050
-JUMPR R8, 0x0058
-//0x0054
-JUMP 0x0060
-//0x0058
-LOADI R9, 0x1
-//0x005C
-JUMP 0x0064
-//0x0060
-LOADI R9, 0x0
-//0x0064 
-ADD R5, R5, R5
-//0x0068
-SUB R10, R10, R0
-//0x006C
-JUMPR R10, 0x0074
-//0x0070
-JUMP 0x0038
+    label For_Each_Bit
+        AND R6, R3, R5
+        AND R7, R4, R5
+        SUB R8, R6, R7
+        JUMPR R8, If_Not_Num1_Sub_Num2
+        SUB R8, R6, R5
+        JUMPR R8, Num1_Bit_is_0
+        JUMP Num1_Bit_is_not_0
 
+        label Num1_Bit_is_0
+        LOADI R9, 0x1
+        JUMP If_Not_Num1_Sub_Num2
+
+        label Num1_Bit_is_not_0
+        LOADI R9, 0x0
+
+        label If_Not_Num1_Sub_Num2
+        ADD R5, R5, R5
+        SUB R10, R10, R0
+        JUMPR R10, Exit_Greater_Than
+        JUMP For_Each_Bit
+
+label Exit_Greater_Than
 
 // Now R9 will tell us if value > value + 1
 // sorted = false
 // swap value and value + 1
 
 
-//0x0074
-JUMPR R9, 0x0024
-//0x0078
-LOADI R1, 0x0
-//0x007C
-SUB R2, R2, R0
-//0x0080
-STORER R4, R2
-//0x0084
-ADD R2, R2, R0
-//0x0088
-STORER R3, R2
-//0x008C
-JUMP 0x0024
 
-//0x0090
-HALT
+JUMPR R9, For_Each_Value
+LOADI R1, 0x0
+SUB R2, R2, R0
+STORER R4, R2
+ADD R2, R2, R0
+STORER R3, R2
+JUMP For_Each_Value
+
+label Program_End
+    HALT
