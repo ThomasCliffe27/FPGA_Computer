@@ -6,9 +6,17 @@ def assemble(input_file, output_file):
         labels = dict()
         mem_pos = 0
         for line in lines:
-            mem_pos += 4
-            if line.startswith("label"):
-                labels[line.strip().removeprefix("label ").removesuffix(":")] = mem_pos
+            cleaned_line = line.strip()
+            if cleaned_line and not cleaned_line.startswith("//"):
+                mem_pos += 4
+                if line.startswith("label"):
+                    mem_pos -= 4
+                    labels[line.strip().removeprefix("label ").removesuffix(":")] = mem_pos
+
+        print("Labels:")
+        for label in labels:
+            print(label, labels[label])
+
 
     with open(input_file, 'r') as f:
         lines = f.readlines()
@@ -16,7 +24,8 @@ def assemble(input_file, output_file):
     binary_instructions = []
     for line in lines:
         line = line.strip()
-        if line and not line.startswith('//'):
+        if line and not line.startswith("label") and not line.startswith('//'):
+            print(f"Processing line: {line}")
             binary_instruction = instr_to_bin(line, labels)
             binary_instructions.append(binary_instruction)
 

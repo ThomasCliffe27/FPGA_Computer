@@ -1,4 +1,4 @@
-def instr_to_bin(instruction, labels: dict):
+def instr_to_bin(instruction: str, labels: dict):
     parts = instruction.split()
     parsed_parts = []
 
@@ -8,10 +8,10 @@ def instr_to_bin(instruction, labels: dict):
         if part in labels:
             part = labels[part]
 
-        if part.startswith("R"):
+        elif part.startswith("R"):
             part = part[1:]
 
-        if part.startswith('0x'):
+        elif part.startswith('0x'):
             part = int(part[2:], 16)
         elif part.startswith('0b'):
             part = int(part[2:], 2)
