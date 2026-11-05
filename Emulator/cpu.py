@@ -24,7 +24,8 @@ class CPU:
         def parse_A_type_instr(instruction):
             Rx = (instruction >> 20) & 0xF
             addr = (instruction >> 4) & 0xFFFF
-            return Rx, addr
+            Ry = (instruction) & 0xF
+            return Rx, addr, Ry
         
         def parse_R_type_instr(instruction):
             Rx = (instruction >> 20) & 0xF
@@ -36,13 +37,21 @@ class CPU:
             Rx, imm = parse_I_type_instr(instruction)
             self.regs[Rx] = imm
 
-        elif opcode == 0x01: #LOAD
-            Rx, addr = parse_A_type_instr(instruction)
+        elif opcode == 0x01: #LOADA
+            Rx, addr, Ry = parse_A_type_instr(instruction)
             self.regs[Rx] = self.memory[addr]
 
-        elif opcode == 0x10: #STORE
-            Rx, addr = parse_A_type_instr(instruction)
+        elif opcode == 0x02: #LOADR
+            Rx, addr, Ry = parse_A_type_instr(instruction)
+            self.regs[Rx] = self.memory[Ry]
+
+        elif opcode == 0x10: #STOREA
+            Rx, addr, Ry = parse_A_type_instr(instruction)
             self.memory[addr] = self.regs[Rx] & 0xFF
+
+        elif opcode == 0x11: #STORER
+            Rx, addr, Ry = parse_A_type_instr(instruction)
+            self.memory[Ry] = self.regs[Rx] & 0xFF
 
         elif opcode == 0x20: #ADD
             Rx, Ry, Rz = parse_R_type_instr(instruction)
@@ -69,11 +78,11 @@ class CPU:
             self.regs[Rx] = (~self.regs[Ry]) & 0xFFFFFFFF
 
         elif opcode == 0x40: #JUMP
-            Rx, addr = parse_A_type_instr(instruction)
+            Rx, addr, Ry = parse_A_type_instr(instruction)
             self.PC = addr
 
         elif opcode == 0x41: #JUMPR
-            Rx, addr = parse_A_type_instr(instruction)
+            Rx, addr, Ry = parse_A_type_instr(instruction)
             if self.regs[Rx] == 0:
                 self.PC = addr 
 

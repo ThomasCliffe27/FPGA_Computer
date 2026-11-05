@@ -1,0 +1,9 @@
+{
+  "scopeName": "source.customasm",
+  "patterns": [
+    {
+      "name": "comment.line.double-slash.customasm",
+      "match": "//.*$"
+    }
+  ]
+}

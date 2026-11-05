@@ -1,0 +1,30 @@
+{
+  "name": "custom-asm",
+  "displayName": "Custom Assembly",
+  "description": "Assembly language support for my custom CPU",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "contributes": {
+    "languages": [
+      {
+        "id": "customasm",
+        "aliases": [
+          "Custom Assembly"
+        ],
+        "extensions": [
+          ".asm"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "customasm",
+        "scopeName": "source.customasm",
+        "path": "./syntaxes/custom-asm.tmLanguage.json"
+      }
+    ]
+  }
+}

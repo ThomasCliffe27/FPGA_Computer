@@ -27,14 +27,21 @@ def instr_to_bin(instruction):
         instruction = (opcode << 24) + (Rx << 20) + ((imm & 0xFFFF) << 4)
         return instruction
 
-    def parse_A_type_instr(parts, opcode):
+    def parse_A_type_instr(parts, opcode, addr_or_reg): #addr_or_reg = 0 for addr, 1 for reg
         if len(parts) > 2:
-            Rx = int(parts[1])
-            addr = int(parts[2])
+            if addr_or_reg:
+                Rx = int(parts[1])
+                addr = 0
+                Ry = int(parts[2])
+            else:
+                Rx = int(parts[1])
+                addr = int(parts[2])
+                Ry = 0
         else:
             Rx = 0  # Default value for Rx if not given e.g. JUMP addr
             addr = int(parts[1])
-        instruction = (opcode << 24) + (Rx << 20) + ((addr & 0xFFFF) << 4)
+            Ry = 0
+        instruction = (opcode << 24) + (Rx << 20) + ((addr & 0xFFFF) << 4) + Ry
         return instruction
 
     def parse_R_type_instr(parts, opcode):
@@ -51,13 +58,21 @@ def instr_to_bin(instruction):
         opcode = 0x00
         return parse_I_type_instr(parsed_parts, opcode)
 
-    elif opcode == "LOAD":
+    elif opcode == "LOADA":
         opcode = 0x01
-        return parse_A_type_instr(parsed_parts, opcode)
+        return parse_A_type_instr(parsed_parts, opcode, 0) # addr_or_reg = 0 for address
 
-    elif opcode == "STORE":
+    elif opcode == "LOADR":
+        opcode = 0x02
+        return parse_A_type_instr(parsed_parts, opcode, 1) # addr_or_reg = 1 for register
+    
+    elif opcode == "STOREA":
         opcode = 0x10
-        return parse_A_type_instr(parsed_parts, opcode)
+        return parse_A_type_instr(parsed_parts, opcode, 0)
+
+    elif opcode == "STORER":
+        opcode = 0x11
+        return parse_A_type_instr(parsed_parts, opcode, 1)
 
     elif opcode == "ADD":
         opcode = 0x20
@@ -85,11 +100,11 @@ def instr_to_bin(instruction):
     
     elif opcode == "JUMP":
         opcode = 0x40
-        return parse_A_type_instr(parsed_parts, opcode)
+        return parse_A_type_instr(parsed_parts, opcode, 0) # addr_or_reg does not matter here
 
     elif opcode == "JUMPR":
         opcode = 0x41
-        return parse_A_type_instr(parsed_parts, opcode)
+        return parse_A_type_instr(parsed_parts, opcode, 0) # addr_or_reg = 0 for address
 
     elif opcode == "NOP":
         opcode = 0xFE
