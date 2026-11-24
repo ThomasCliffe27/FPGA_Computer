@@ -4,6 +4,8 @@ class CPU:
         self.PC = 0 #Program counter
         self.memory = [0] * 65536
         self.running = True
+        self.z = 0
+        self.c = 0
 
     def fetch(self):
         instruction = ((self.memory[self.PC] << 24) + 
@@ -84,7 +86,22 @@ class CPU:
         elif opcode == 0x41: #JUMPR
             Rx, addr, Ry = parse_A_type_instr(instruction)
             if self.regs[Rx] == 0:
-                self.PC = addr 
+                self.PC = addr
+
+        elif opcode == 0x42: #JUMPZ
+            Rx, addr, Ry = parse_A_type_instr(instruction)
+            if self.z == 1:
+                 self.PC = addr
+
+        elif opcode == 0x43: #JUMPC
+            Rx, addr, Ry = parse_A_type_instr(instruction)
+            if self.c == 1:
+                self.PC = addr  
+
+        elif opcode == 0x50: #CMP
+            Rx, Ry, Rz = parse_R_type_instr(instruction)
+            self.z = 1 if self.regs[Rx] - self.regs[Ry] == 0 else 0
+            self.c = 0 if self.regs[Rx] - self.regs[Ry] >= 0 else 1
 
         elif opcode == 0xFE: #NOP
             pass

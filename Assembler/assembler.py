@@ -38,7 +38,7 @@ def assemble(input_file, output_file):
 
 
 if __name__ == "__main__":
-    input_file = 'Programs/bubble_sort.asm'
-    output_file = 'Programs/bubble_sort.bin'
+    input_file = 'Programs/bubble_sort_new.asm'
+    output_file = 'Programs/bubble_sort_new.bin'
     assemble(input_file, output_file)
     print(f"Assembly complete. Binary output written to {output_file}.")

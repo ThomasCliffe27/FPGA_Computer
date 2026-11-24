@@ -109,6 +109,18 @@ def instr_to_bin(instruction: str, labels: dict):
         opcode = 0x41
         return parse_A_type_instr(parsed_parts, opcode, 0) # addr_or_reg = 0 for address
 
+    elif opcode == "JUMPZ":
+            opcode = 0x42
+            return parse_A_type_instr(parsed_parts, opcode, 0) # addr_or_reg does not matter here
+
+    elif opcode == "JUMPC":
+            opcode = 0x43
+            return parse_A_type_instr(parsed_parts, opcode, 0) # addr_or_reg does not matter here
+
+    elif opcode == "CMP":
+        opcode = 0x50
+        return parse_R_type_instr(parsed_parts, opcode)
+
     elif opcode == "NOP":
         opcode = 0xFE
         return opcode << 24

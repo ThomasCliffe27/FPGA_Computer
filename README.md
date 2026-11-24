@@ -23,6 +23,7 @@ For a first simple version there will be:
 - 16 32-Bit registers
 - 65536 Bytes of RAM (2 ^ 16)
 - Von Neumann architecture
+- Zero(z) flag and Carry(c) flag, which are only updated by CMP
 
 ### ISA
 
@@ -50,8 +51,15 @@ The instructions may contain some abbreviations which i have shown below.
 | NOT Rx, Ry      | 0x33   | R-Type | Stores the bitwise result of ~Ry in Rx                                           |
 | JUMP addr       | 0x40   | A-Type | Sets the PC to the address stated                                                |
 | JUMPR Rx, addr  | 0x41   | A-Type | Sets the PC to the address stated if Rx == 0                                     |
+| JUMPZ addr      | 0x42   | A-Type | Sets the PC to the address stated if z flag = 1                                  |
+| JUMPC addr      | 0x43   | A-Type | Sets the PC to the address stated if c flag = 1                                  |
+| CMP Rx, Ry      | 0x50   | R-Type | Updates z and c flags                                                            |
 | NOP             | 0xFE   | B-Type | Performs no operation                                                            |
 | HALT            | 0xFF   | B-Type | Stops execution of the CPU                                                       |
+
+#### CMP
+If Rx - Ry == 0: z = 1 else z = 0
+If Rx - Ry >= 0: c = 0 else c = 1
 
 ### Instruction encoding
 
@@ -105,3 +113,6 @@ The encoding for each type of instruction is as follows:
 
 The folder custom-asm contains a custom vscode extension to make comments appear greyed out in my .asm files.
 In the future I will add proper highlighting, not just for comments.
+
+## Change log
+- 24/11/26 - Added CMP, JUMPC and JUMPZ to allow for easier comparison of numbers instead of having to check each bit of each number one by one to find the larger number. To implement these instructions I added a zero(z) flag and a carry(c) flag in the cpu.

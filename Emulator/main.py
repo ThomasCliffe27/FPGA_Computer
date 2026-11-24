@@ -1,6 +1,6 @@
 from cpu import CPU
 
-program = "Programs/bubble_sort.bin"
+program = "Programs/bubble_sort_new.bin"
 
 cpu = CPU()
 
